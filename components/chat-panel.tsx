@@ -10,6 +10,7 @@ import { useAIState, useActions, useUIState } from 'ai/rsc'
 import type { AI } from '@/lib/chat/actions'
 import { nanoid } from 'nanoid'
 import { UserMessage } from './stocks/message'
+import { useTheme } from 'next-themes'
 
 export interface ChatPanelProps {
   id?: string
@@ -32,6 +33,10 @@ export function ChatPanel({
   const [messages, setMessages] = useUIState<typeof AI>()
   const { submitUserMessage } = useActions()
   const [shareDialogOpen, setShareDialogOpen] = React.useState(false)
+
+  const { theme } = useTheme()
+
+  console.log('theme', theme)
 
   const exampleMessages = [
     {
