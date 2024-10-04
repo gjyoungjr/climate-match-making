@@ -5,7 +5,6 @@ import { Button } from '@/components/ui/button'
 import { PromptForm } from '@/components/prompt-form'
 import { ButtonScrollToBottom } from '@/components/button-scroll-to-bottom'
 import { IconShare } from '@/components/ui/icons'
-import { FooterText } from '@/components/footer'
 import { ChatShareDialog } from '@/components/chat-share-dialog'
 import { useAIState, useActions, useUIState } from 'ai/rsc'
 import type { AI } from '@/lib/chat/actions'
@@ -36,24 +35,19 @@ export function ChatPanel({
 
   const exampleMessages = [
     {
-      heading: 'What are the',
-      subheading: 'trending memecoins today?',
-      message: `What are the trending memecoins today?`
+      heading: 'Can you',
+      subheading: 'show me like minded builders?',
+      message: `Can you show me like minded builders?`
     },
     {
-      heading: 'What is the price of',
-      subheading: '$DOGE right now?',
-      message: 'What is the price of $DOGE right now?'
+      heading: 'What local events',
+      subheading: 'are happening in the climate tech scene?',
+      message: 'What local events are happening in the climate tech scene?'
     },
     {
-      heading: 'I would like to buy',
-      subheading: '42 $DOGE',
-      message: `I would like to buy 42 $DOGE`
-    },
-    {
-      heading: 'What are some',
-      subheading: `recent events about $DOGE?`,
-      message: `What are some recent events about $DOGE?`
+      heading: 'What are',
+      subheading: 'the latest AI trends in climate tech?',
+      message: `What are the latest AI trends in climate tech?`
     }
   ]
 
@@ -131,7 +125,6 @@ export function ChatPanel({
 
         <div className="space-y-4 border-t bg-background px-4 py-2 shadow-lg sm:rounded-t-xl sm:border md:py-4">
           <PromptForm input={input} setInput={setInput} />
-          <FooterText className="hidden sm:block" />
         </div>
       </div>
     </div>
