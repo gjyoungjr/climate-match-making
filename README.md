@@ -1,6 +1,8 @@
-# Climate Match Maker 
+# Climate Match Maker
 
-An open source AI platform that uses a semantic search engine and knowledge graph to connect climate tech builders.## Running locally
+An open-source AI platform that uses a knowledge graph to connect climate tech builders working on similar problems and interests.
+
+## Running locally
 
 You will need to use the environment variables [defined in `.env.example`](.env.example) to run Next.js AI Chatbot. It's recommended you use [Vercel Environment Variables](https://vercel.com/docs/projects/environment-variables) for this, but a `.env` file is all that is necessary.
 
@@ -17,5 +19,6 @@ pnpm dev
 
 Your app template should now be running on [localhost:3000](http://localhost:3000/).
 
-## Copyright 
+## Copyright
+
 This repository is a fork of [Vercel's UI template](https://github.com/vercel/ai-chatbot), which we used to quickly set up a UI for a chatbot.
