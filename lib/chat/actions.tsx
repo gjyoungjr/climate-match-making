@@ -36,6 +36,10 @@ import { SpinnerMessage, UserMessage } from '@/components/stocks/message'
 import { Chat, Message } from '@/lib/types'
 import { auth } from '@/auth'
 
+// TODO: Add tool calling relatead to
+// 1. Fetching climate events from Luma API
+// 2. News articles around ai trends in climate tech
+
 async function confirmPurchase(symbol: string, price: number, amount: number) {
   'use server'
 
@@ -133,7 +137,6 @@ async function submitUserMessage(content: string) {
 
     You are a climate match maker who helps engineers connect to other builders who are working on similar problems and interests. 
     You and the user can discuss finding climate tech events, and recent AI trends in climate tech.
-
 `,
     messages: [
       ...aiState.get().messages.map((message: any) => ({
