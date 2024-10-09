@@ -1,3 +1,6 @@
 # rag-knowledge-graph
 
-Experiemental RAG method using Knowledge Graphs.
+Jupyter notebooks for experimentations.
+
+- RAG (Retrieval Augmented Generation) Knowledge Graph
+- WebScraping
