@@ -1,4 +1,4 @@
-# rag-knowledge-graph
+# Jupyter Notebooks
 
 Jupyter notebooks for experimentations.
 
