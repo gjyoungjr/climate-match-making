@@ -18,10 +18,27 @@ def get_events():
        soup = BeautifulSoup(response.content, "html.parser")
        
        events = soup.find_all('div', class_='card-wrapper')
+       event_data = []
        
-       pprint(f"Events: {events}")
+       for event in events: 
+            title = event.find('h3').text.strip() 
+            link_tag = event.find('a')
+            link = ''
+            
+            if link_tag and 'href' in link_tag.attrs:
+                link = link_tag['href']
+    
+            event_details = {
+                'title': title,
+                'link': f"https://lu.ma/{link}"
+            }
+    
+            event_data.append(event_details)
+           
        
-       return jsonify({"status": "ok"}), 200
+       pprint(f"Events: {event_data}")
+       
+       return jsonify({"status": "ok", "result": event_data}), 200
 
        
    except Exception as e:
