@@ -7,3 +7,5 @@ python-dotenv
 flask
 boto3
 urllib3==1.26.7
+requests
+beautifulsoup4
