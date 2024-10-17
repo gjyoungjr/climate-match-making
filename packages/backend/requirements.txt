@@ -3,6 +3,7 @@ llama-index-core
 llama-index-embeddings-openai
 pinecone-client
 llama-index-vector-stores-pinecone
+llama-index-graph-stores-neo4j
 python-dotenv
 flask
 boto3

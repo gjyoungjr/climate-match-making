@@ -7,7 +7,7 @@ ECR_REPO=public.ecr.aws/y9j1k7y7
 IMAGE_NAME=climate-match-making
 VERSION=1.0.0
 
-## docker run -p 8000:8000 esgene-rag  
+## docker run -p 8000:8000 climate-match-making  
 
 # Build and push docker image to ECR 
 docker-login:
