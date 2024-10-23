@@ -4,7 +4,7 @@ import Link from 'next/link'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useFieldArray, useForm } from 'react-hook-form'
 import { z } from 'zod'
-
+import React from 'react'
 import { cn } from '@/lib/utils'
 import { toast } from 'sonner'
 import { Button } from '@/components/ui/button'
@@ -18,24 +18,12 @@ import {
   FormMessage
 } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue
-} from '@/components/ui/select'
 import { Textarea } from '@/components/ui/textarea'
+import { Separator } from '@/components/ui/separator'
+import { Session } from '@/lib/types'
+import { auth } from '@/auth'
 
 const profileFormSchema = z.object({
-  username: z
-    .string()
-    .min(2, {
-      message: 'Username must be at least 2 characters.'
-    })
-    .max(30, {
-      message: 'Username must not be longer than 30 characters.'
-    }),
   email: z
     .string({
       required_error: 'Please select an email to display.'
@@ -56,10 +44,7 @@ type ProfileFormValues = z.infer<typeof profileFormSchema>
 // This can come from your database or API.
 const defaultValues: Partial<ProfileFormValues> = {
   interest: '',
-  urls: [
-    { value: 'https://shadcn.com' },
-    { value: 'http://twitter.com/shadcn' }
-  ]
+  urls: [{ value: 'https://instagram.com' }, { value: 'http://twitter.com' }]
 }
 
 export default function ProfileForm() {
@@ -75,6 +60,7 @@ export default function ProfileForm() {
   })
 
   function onSubmit(data: ProfileFormValues) {
+    alert(JSON.stringify(data, null, 2))
     // // toast({
     // //   title: 'You submitted the following values:',
     // //   description: (
@@ -87,93 +73,107 @@ export default function ProfileForm() {
     ;<div>hey</div>
   }
 
+  React.useEffect(() => {
+    console.log('session')
+
+    // Define the async function inside the useEffect
+    const fetchSession = async () => {
+      try {
+        const session = (await auth()) as Session
+        console.log('session')
+      } catch (error) {
+        console.error('Failed to fetch session:', error)
+      }
+    }
+
+    // Call the async function
+    fetchSession()
+  }, [])
+
   return (
-    <Form {...form}>
-      <form
-        onSubmit={form.handleSubmit(onSubmit)}
-        className="space-y-6 ml-20 mr-20 mt-10"
-      >
-        <FormField
-          control={form.control}
-          name="email"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Email</FormLabel>
-              <Select onValueChange={field.onChange} defaultValue={field.value}>
+    <div className="space-y-6 ml-20 mr-20 mt-10">
+      <div className="space-y-0.5">
+        <h2 className="text-2xl font-bold tracking-tight">Settings</h2>
+        <p className="text-muted-foreground">
+          Manage your account settings and set e-mail preferences.
+        </p>
+      </div>
+      <Separator />
+      <Form {...form}>
+        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+          <FormField
+            control={form.control}
+            name="email"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Email</FormLabel>
                 <FormControl>
-                  <SelectTrigger>
-                    <SelectValue placeholder="Select a verified email to display" />
-                  </SelectTrigger>
+                  <Input placeholder="johndoe@gmail.com" {...field} />
                 </FormControl>
-                <SelectContent>
-                  <SelectItem value="m@example.com">m@example.com</SelectItem>
-                  <SelectItem value="m@google.com">m@google.com</SelectItem>
-                  <SelectItem value="m@support.com">m@support.com</SelectItem>
-                </SelectContent>
-              </Select>
-              <FormDescription>
-                You can manage verified email addresses in your{' '}
-                <Link href="/examples/forms">email settings</Link>.
-              </FormDescription>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-        <FormField
-          control={form.control}
-          name="interest"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Interests</FormLabel>
-              <FormControl>
-                <Textarea
-                  placeholder="Tell us what are you working on or interested in."
-                  className="resize-none"
-                  {...field}
-                />
-              </FormControl>
-              <FormDescription>
-                Tell us what are you building/working on. i.e "I'm building AI
-                hardware that aids in carbon sequestration."
-              </FormDescription>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-        <div>
-          {fields.map((field, index) => (
-            <FormField
-              control={form.control}
-              key={field.id}
-              name={`urls.${index}.value`}
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel className={cn(index !== 0 && 'sr-only')}>
-                    URLs
-                  </FormLabel>
-                  <FormDescription className={cn(index !== 0 && 'sr-only')}>
-                    Add links to your website, blog, or social media profiles.
-                  </FormDescription>
-                  <FormControl>
-                    <Input {...field} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-          ))}
-          <Button
-            type="button"
-            variant="outline"
-            size="sm"
-            className="mt-2"
-            onClick={() => append({ value: '' })}
-          >
-            Add URL
-          </Button>
-        </div>
-        <Button type="submit">Update profile</Button>
-      </form>
-    </Form>
+                <FormDescription>
+                  This is your public display name. It can be your real name or
+                  a pseudonym. You can only change this once every 30 days.
+                </FormDescription>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+
+          <FormField
+            control={form.control}
+            name="interest"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Interests</FormLabel>
+                <FormControl>
+                  <Textarea
+                    placeholder="Tell us what are you working on."
+                    className="resize-none"
+                    {...field}
+                  />
+                </FormControl>
+                <FormDescription>
+                  i.e I'm building AI hardware for carbon sequestration.
+                </FormDescription>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <div>
+            {fields.map((field, index) => (
+              <FormField
+                control={form.control}
+                key={field.id}
+                name={`urls.${index}.value`}
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel className={cn(index !== 0 && 'sr-only')}>
+                      URLs
+                    </FormLabel>
+                    <FormDescription className={cn(index !== 0 && 'sr-only')}>
+                      Add links to your website, blog, or social media profiles.
+                    </FormDescription>
+                    <FormControl>
+                      <Input {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+            ))}
+            <Button
+              type="button"
+              variant="outline"
+              size="sm"
+              className="mt-2"
+              onClick={() => append({ value: '' })}
+            >
+              Add URL
+            </Button>
+          </div>
+          <Button type="submit">Update profile</Button>
+        </form>
+      </Form>
+    </div>
   )
 }
