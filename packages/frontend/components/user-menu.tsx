@@ -1,5 +1,4 @@
 import { type Session } from '@/lib/types'
-
 import { Button } from '@/components/ui/button'
 import {
   DropdownMenu,
@@ -9,6 +8,7 @@ import {
   DropdownMenuTrigger
 } from '@/components/ui/dropdown-menu'
 import { signOut } from '@/auth'
+import Link from 'next/link'
 
 export interface UserMenuProps {
   user: Session['user']
@@ -36,6 +36,13 @@ export function UserMenu({ user }: UserMenuProps) {
             <div className="text-xs text-zinc-500">{user.email}</div>
           </DropdownMenuItem>
           <DropdownMenuSeparator />
+
+          <DropdownMenuItem className="flex-col items-start">
+            <Link href="/profile">
+              <div className="text-xs">Edit profile</div>
+            </Link>
+          </DropdownMenuItem>
+
           <form
             action={async () => {
               'use server'
