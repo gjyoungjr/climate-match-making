@@ -24,11 +24,9 @@ import { Session } from '@/lib/types'
 import { auth } from '@/auth'
 
 const profileFormSchema = z.object({
-  email: z
-    .string({
-      required_error: 'Please select an email to display.'
-    })
-    .email(),
+  location: z.string({
+    required_error: 'Please enter your city.'
+  }),
   interest: z.string().max(160).min(4),
   urls: z
     .array(
@@ -43,8 +41,7 @@ type ProfileFormValues = z.infer<typeof profileFormSchema>
 
 // This can come from your database or API.
 const defaultValues: Partial<ProfileFormValues> = {
-  interest: '',
-  urls: [{ value: 'https://instagram.com' }, { value: 'http://twitter.com' }]
+  interest: ''
 }
 
 export default function ProfileForm() {
@@ -94,26 +91,21 @@ export default function ProfileForm() {
     <div className="space-y-6 ml-20 mr-20 mt-10">
       <div className="space-y-0.5">
         <h2 className="text-2xl font-bold tracking-tight">Settings</h2>
-        <p className="text-muted-foreground">
-          Manage your account settings and set e-mail preferences.
-        </p>
+        <p className="text-muted-foreground">Manage your account settings.</p>
       </div>
       <Separator />
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
           <FormField
             control={form.control}
-            name="email"
+            name="location"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Email</FormLabel>
+                <FormLabel>Location</FormLabel>
                 <FormControl>
-                  <Input placeholder="johndoe@gmail.com" {...field} />
+                  <Input placeholder="San Francisco" {...field} />
                 </FormControl>
-                <FormDescription>
-                  This is your public display name. It can be your real name or
-                  a pseudonym. You can only change this once every 30 days.
-                </FormDescription>
+                <FormDescription>What city are you based in?</FormDescription>
                 <FormMessage />
               </FormItem>
             )}
