@@ -4,9 +4,9 @@ import { auth } from '@/auth'
 import { kv } from '@vercel/kv'
 
 interface Links {
-  [key: string]: string
+  value: string
 }
-interface Bio extends Record<string, any> {
+export interface Bio extends Record<string, any> {
   interests: string
   location: string
 }
@@ -19,13 +19,10 @@ export async function saveBio(bio: Bio) {
       error: 'Unauthorized'
     }
   }
-  const userId = session?.user?.id
+  const userId = 'a4cdb028-6958-4778-8201-1049d0991648'
 
   try {
-    const pipeline = kv.pipeline()
-
-    pipeline.hmset(`user:${userId}:bio`, bio)
-    await pipeline.exec()
+    kv.hmset(`user:bio:${userId}`, bio)
   } catch (error) {
     return {
       error: 'Error saving bio'
@@ -34,6 +31,7 @@ export async function saveBio(bio: Bio) {
 }
 
 export async function getBio(userId: string) {
+  console.log('params', userId)
   const session = await auth()
 
   if (userId !== session?.user?.id) {
@@ -43,7 +41,7 @@ export async function getBio(userId: string) {
   }
 
   const _userId = session?.user?.id
-  const bio = await kv.hgetall<Bio>(`user:${_userId}:bio`)
+  const bio = await kv.hgetall<Bio>(`user:bio:${userId}`)
 
   return bio
 }

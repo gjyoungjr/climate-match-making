@@ -22,12 +22,13 @@ import { Textarea } from '@/components/ui/textarea'
 import { Separator } from '@/components/ui/separator'
 import { Session } from '@/lib/types'
 import { auth } from '@/auth'
+import { Bio, saveBio, getBio } from '@/lib/bio/actions'
 
 const profileFormSchema = z.object({
   location: z.string({
     required_error: 'Please enter your city.'
   }),
-  interest: z.string().max(160).min(4),
+  interests: z.string().max(160).min(4),
   urls: z
     .array(
       z.object({
@@ -41,7 +42,7 @@ type ProfileFormValues = z.infer<typeof profileFormSchema>
 
 // This can come from your database or API.
 const defaultValues: Partial<ProfileFormValues> = {
-  interest: ''
+  interests: ''
 }
 
 export default function ProfileForm() {
@@ -56,35 +57,29 @@ export default function ProfileForm() {
     control: form.control
   })
 
-  function onSubmit(data: ProfileFormValues) {
-    alert(JSON.stringify(data, null, 2))
-    // // toast({
-    // //   title: 'You submitted the following values:',
-    // //   description: (
-    // //     <pre className="mt-2 w-[340px] rounded-md bg-slate-950 p-4">
-    // //       <code className="text-white">{JSON.stringify(data, null, 2)}</code>
-    // //     </pre>
-    // //   )
-    // // })
-    // toast.success('Profile updated!')
-    ;<div>hey</div>
+  async function onSubmit(data: ProfileFormValues) {
+    try {
+      const bio: Bio = {
+        ...data
+      }
+      await saveBio(bio)
+      toast.success('Profile updated!')
+    } catch (error) {
+      toast.error('Failed to update profile.')
+      return
+    }
   }
 
   React.useEffect(() => {
-    console.log('session')
-
-    // Define the async function inside the useEffect
-    const fetchSession = async () => {
-      try {
-        const session = (await auth()) as Session
-        console.log('session')
-      } catch (error) {
-        console.error('Failed to fetch session:', error)
-      }
+    async function fetchBio() {
+      // const session = await auth()
+      // if (!session?.user?.id) {
+      //   return
+      // }
+      const bio = await getBio('a4cdb028-6958-4778-8201-1049d0991648')
+      console.log('bio', bio)
     }
-
-    // Call the async function
-    fetchSession()
+    fetchBio()
   }, [])
 
   return (
@@ -113,7 +108,7 @@ export default function ProfileForm() {
 
           <FormField
             control={form.control}
-            name="interest"
+            name="interests"
             render={({ field }) => (
               <FormItem>
                 <FormLabel>Interests</FormLabel>
