@@ -21,11 +21,8 @@ import { SpinnerMessage, UserMessage } from '@/components/stocks/message'
 import { Chat, Message } from '@/lib/types'
 import { auth } from '@/auth'
 
-// TODO: Add tool calling relatead to
-// 1. Fetching climate events from Luma API
-// 2. News articles around ai trends in climate tech
-
 async function fetchLumaEvents(location: string) {
+  // TODO: Update to PROD URL
   const results = await fetch('http://127.0.0.1:8000/events', {
     method: 'GET'
   })
